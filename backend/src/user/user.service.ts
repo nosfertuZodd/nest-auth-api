@@ -5,6 +5,7 @@ import { userEntity } from './user.entity';
 import { Model } from 'mongoose';
 import { loginDto } from './dto/loginUser.dto';
 import { compare } from 'bcrypt';
+import { UserResponseType } from './types/userResponse.types';
 
 @Injectable()
 export class UserService {
@@ -42,5 +43,11 @@ export class UserService {
       );
     }
     return user;
+  }
+  buildUserResponse(UserEntity: userEntity): UserResponseType {
+    return {
+      name: UserEntity.name,
+      email: UserEntity.email,
+    };
   }
 }
