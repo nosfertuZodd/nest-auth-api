@@ -6,6 +6,7 @@ import { Model } from 'mongoose';
 import { loginDto } from './dto/loginUser.dto';
 import { compare } from 'bcrypt';
 import { UserResponseType } from './types/userResponse.types';
+import { sign } from 'jsonwebtoken';
 
 @Injectable()
 export class UserService {
@@ -48,6 +49,10 @@ export class UserService {
     return {
       name: UserEntity.name,
       email: UserEntity.email,
+      token: this.generateJwt(UserEntity),
     };
+  }
+  generateJwt(UserEntity: userEntity): string {
+    return sign({ email: UserEntity.email }, 'JWT');
   }
 }
