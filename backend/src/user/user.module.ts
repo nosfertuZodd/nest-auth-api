@@ -1,9 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Module, RequestMethod, MiddlewareConsumer } from '@nestjs/common';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { userEntity, userEntitySchema } from './user.entity';
-
+import { authMiddleware } from './middleware/auth.middleware';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -13,4 +13,11 @@ import { userEntity, userEntitySchema } from './user.entity';
   controllers: [UserController],
   providers: [UserService],
 })
-export class UserModule {}
+export class UserModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(authMiddleware).forRoutes({
+      path: '*',
+      method: RequestMethod.ALL,
+    });
+  }
+}

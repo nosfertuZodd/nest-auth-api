@@ -55,4 +55,7 @@ export class UserService {
   generateJwt(UserEntity: userEntity): string {
     return sign({ email: UserEntity.email }, 'JWT');
   }
+  async findByEmail(email: string): Promise<userEntity> {
+    return this.userModel.findOne({ email });
+  }
 }
